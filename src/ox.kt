@@ -9,23 +9,31 @@ fun main() {
         ,arrayOf("2" , "-" ,"-" ,"-")
         ,arrayOf("3" , "-" ,"-" ,"-")
     )
-    while (!checkTurnEnd(countTurn) || checkWin(table)) {
-        println(playerTurn)
-        playerTurn = switchPlayer(playerTurn)
-        countTurn ++
+    while (!checkEndGame(table)) {
+        
+        //EndTurn
+        endTurn()
         }
-    if(checkTurnEnd(countTurn)){
-        println("*---- Draw ----*")
-        clearTable(table)
-        playerTurn = "x"
-        countTurn = 1
-    }
+
+        //showTable
+        showTable(table)
+
+        //EndGame
+        resetGame(table)
 
 
-    showTable(table)
-    print(checkWin(table))
 }
 
+fun endTurn() {
+    playerTurn = switchPlayer(playerTurn)
+    countTurn ++
+}
+
+fun resetGame(table : Array<Array<String>>) {
+    playerTurn = "x"
+    countTurn = 1
+    clearTable(table)
+}
 
 
 fun switchPlayer(p:String) : String{
@@ -36,10 +44,21 @@ fun switchPlayer(p:String) : String{
     }
 }
 
-fun checkTurnEnd(turn : Int) : Boolean = turn == 9
+fun checkDraw(turn : Int) : Boolean = turn == 9
 
 fun checkInput(s:String) : Boolean {
     return true
+}
+
+fun checkEndGame(table : Array<Array<String>>) : Boolean{
+    if(checkWin(table)){
+        return true
+    }
+    else if(checkDraw(countTurn)){
+        println("*---- Draw ----*")
+        return true
+    }
+    return false
 }
 
 fun checkWin(table : Array<Array<String>>) : Boolean{
@@ -79,8 +98,8 @@ fun showTable (table : Array<Array<String>>) {
 }
 
 fun clearTable (table : Array<Array<String>>){
-    for ( i in table.indices){
-        for ( j in table[i].indices){
+    for ( i in 1..3){
+        for ( j in 1..3){
             table[i][j] = "-"
         }
     }
